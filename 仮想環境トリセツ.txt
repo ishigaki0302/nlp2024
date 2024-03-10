@@ -1,0 +1,55 @@
+仮想環境を扱うための基本的な操作は以下の通りです。
+
+1. 仮想環境の作成
+```bash
+python3.10 -m venv /path/to/new/virtual/environment
+```
+このコマンドは、指定したパスに新しい仮想環境を作成します。
+
+2. 仮想環境のアクティベート
+```bash
+source /path/to/new/virtual/environment/bin/activate
+```
+このコマンドは、仮想環境をアクティベートします。アクティベートすると、シェルプロンプトに仮想環境名が表示されます。
+
+3. 仮想環境内でのパッケージのインストール
+```bash
+pip install package_name
+```
+仮想環境がアクティベートされている状態で`pip install`コマンドを実行すると、パッケージが仮想環境内にインストールされます。
+
+4. 仮想環境の非アクティベート
+```bash
+deactivate
+```
+このコマンドは、仮想環境を非アクティベートします。
+
+5. 仮想環境の削除
+```bash
+rm -rf /path/to/new/virtual/environment
+```
+このコマンドは、仮想環境のディレクトリを削除します。
+
+Dockerfileの例では、`RUN python3.10 -m venv /venv`で仮想環境を作成し、`ENV PATH=/venv/bin:$PATH`で自動的にアクティベートしています。これにより、`RUN pip install ...`コマンドは仮想環境内でパッケージをインストールします。
+
+コンテナ内で仮想環境を使用する場合、以下のようにします。
+
+```bash
+# コンテナを起動
+docker run --gpus all -it --rm myimage
+
+# 仮想環境がアクティベートされていることを確認
+which python
+# /venv/bin/python が表示されるはず
+
+# 仮想環境内でパッケージをインストール
+pip install numpy
+
+# 仮想環境を非アクティベート
+deactivate
+
+# 仮想環境を再度アクティベート
+source /venv/bin/activate
+```
+
+これらのコマンドを使用して、コンテナ内の仮想環境を管理できます。
